@@ -152,11 +152,15 @@ aside {
     color: #fff;
   }
 
-  &.draft {
+  &.online {
     background: #d0d0d0;
   }
 
-  &.deleted {
+  &.offline {
+    background: #d0d0d0;
+  }
+
+  &.checking {
     background: #d0d0d0;
   }
 }

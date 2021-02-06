@@ -2,12 +2,6 @@
   <div>
     <div class="filter-container">
       <el-input v-model="listQuery.service_name" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select placeholder="Imp" clearable style="width: 90px" class="filter-item">
-        <el-option />
-      </el-select>
-      <el-select placeholder="Type" clearable class="filter-item" style="width: 130px">
-        <el-option />
-      </el-select>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -27,15 +21,15 @@
 
     <div class="app-container">
       <el-table
-        :data="this.list"
         v-loading="listLoading"
+        :data="this.list"
         default-sort
         border
         fit
         highlight-current-row
         style="width: 100%;"
       >
-        <el-table-column align="center" label="ID" width="80" prop="ID" sortable>
+        <el-table-column align="center" label="ID" width="60" prop="ID" sortable>
           <template slot-scope="scope">
             <span>{{ scope.row.id }}</span>
           </template>
@@ -47,21 +41,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="160px" align="center" label="服务提供商">
-          <template slot-scope="scope">
-            <span>{{ scope.row.service_company }}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column width="120px" align="center" label="上线日期">
           <template slot-scope="scope">
             <span>{{ scope.row.online_time }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column width="220px" align="center" label="服务描述">
-          <template slot-scope="scope">
-            <span>{{ scope.row.service_details }}</span>
           </template>
         </el-table-column>
 
@@ -80,13 +62,20 @@
             </router-link>
           </template>
         </el-table-column>-->
-        <el-table-column align="center" label="Actions" width="120">
-          <template slot-scope="scope">
-            <router-link :to="'/example/edit/'+scope.row.id">
-              <el-button type="primary" size="small" icon="el-icon-edit">
-                详情
+
+        <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+            <router-link :to="'/Provider/submitservice'">
+              <el-button type="primary" size="mini" @click="handleUpdate(row)">
+                Edit
               </el-button>
             </router-link>
+            <el-button v-if="row.service_status=='offline'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+              Publish
+            </el-button>
+            <el-button v-if="row.service_status=='online'||row.service_status=='checking'" size="mini" type="danger" @click="handleDelete(row,$index)">
+              Delete
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,11 +86,11 @@
   </div>
 </template>
 <script>
+import Pagination from '@/components/Pagination/index'
 import { feachServiceList } from '@/api/service'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: 'IndexVue',
+  name: 'MyServiceList',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -115,28 +104,6 @@ export default {
   },
   data() {
     return {
-      serviceTable: [{
-        id: 1,
-        service_name: 'service1',
-        service_company: 'company1',
-        online_time: 'xxxx-xx-xx',
-        service_details: 'I am service1',
-        service_status: 'online'
-      }, {
-        id: 2,
-        service_name: 'service2',
-        service_company: 'company2',
-        online_date: 'xxxx-xx-xx',
-        service_details: 'I am service2',
-        service_status: 'offline'
-      }, {
-        id: 3,
-        service_name: 'service3',
-        service_company: 'company3',
-        online_time: 'xxxx-xx-xx',
-        service_details: 'I am service3',
-        service_status: 'checking'
-      }],
       list: '',
       listLoading: '',
       total: 0,
@@ -169,6 +136,13 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getServiceList()
+    },
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: '操作Success',
+        type: 'success'
+      })
+      row.status = status
     }
   }
 }
