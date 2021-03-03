@@ -30,7 +30,7 @@
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="ServiceCompany:" class="postInfo-container-item">
                     <el-select v-model="postForm.service_company" remote-method="" filterable default-first-option remote placeholder="Search Company">
-                      <el-option />
+                      <el-option v-for="(item,index) in companyOptions" :key="item+index" :label="item" :value="item" />
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -80,8 +80,9 @@ import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import Upload from '@/components/Upload/SingleImage3'
 import { validURL } from '@/utils/validate'
+import { submitService } from '@/api/service'
 
-const defaultForm = {
+/* const defaultForm = {
   service_status: 'info',
   service_name: '', // 服务名称
   service_company: '', // 服务提供商
@@ -91,7 +92,7 @@ const defaultForm = {
   image_uri: '', // 文章图片
   online_time: undefined, // 前台展示时间
   id: undefined
-}
+}*/
 
 export default {
   name: 'ServiceDetail',
@@ -124,14 +125,24 @@ export default {
       }
     }
     return {
-      postForm: Object.assign({}, defaultForm),
+      postForm: {
+        service_status: 'checking',
+        service_name: '',
+        service_company: '',
+        service_details: '',
+        content_short: '',
+        source_uri: '',
+        image_uri: '',
+        online_time: ''
+      },
       loading: false,
       rules: {
         service_name: [{ validator: validateRequire }],
         service_details: [{ validator: validateRequire }],
         image_uri: [{ validator: validateRequire }]
         // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
-      }
+      },
+      companyOptions: ['Dragon', 'Eric']
     }
   },
   methods: {
@@ -139,15 +150,18 @@ export default {
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '提交服务成功',
-            type: 'success',
-            duration: 20000
+          this.loading = false
+          submitService(this.postForm).then(response => {
+            this.loading = response.data
+            this.$notify({
+              title: '成功',
+              message: '提交服务成功',
+              type: 'success',
+              duration: 20000
+            })
+            this.loading = false
           })
           this.postForm.status = 'checking'
-          this.loading = false
         } else {
           console.log('error submit!!')
           return false

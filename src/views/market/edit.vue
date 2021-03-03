@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <el-form>
-      <sticky >
+      <sticky>
         <!--        <CommentDropdown v-model="postForm.comment_disabled" />
                 <PlatformDropdown v-model="postForm.platforms" />
                 <SourceUrlDropdown v-model="postForm.source_uri" />-->
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="handleCreate">
           Purchase
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">
@@ -32,8 +32,23 @@
             </el-tabs>
           </el-card>
         </el-col>
-
       </el-row>
+
+      <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+        <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+          <el-form-item label="info">
+            <el-input v-model="temp.key" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">
+            Cancel
+          </el-button>
+          <el-button type="primary" @click="purchase">
+            Confirm
+          </el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 
@@ -45,6 +60,7 @@ import BriefIntroCard from './components/BriefIntroCard'
 import ServiceDetail from '@/views/market/components/ServiceDetail'
 import FeedBackCard from '@/views/market/components/FeedBackCard'
 import { mapGetters } from 'vuex'
+import { purchaseService } from '@/api/service'
 
 export default {
   name: 'Edit',
@@ -52,7 +68,18 @@ export default {
   data() {
     return {
       user: {},
-      activeTab: 'activity'
+      activeTab: 'activity',
+      temp: {
+        key: ''
+      },
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      dialogPvVisible: false,
+      id: ''
     }
   },
   computed: {
@@ -63,6 +90,7 @@ export default {
     ])
   },
   created() {
+    this.id = this.$route.params.id
     this.getUser()
   },
   methods: {
@@ -72,6 +100,26 @@ export default {
         role: this.roles.join(' | '),
         email: 'admin@test.com',
         avatar: this.avatar
+      }
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.dialogFormVisible = true
+    },
+    purchase() {
+      purchaseService(this.id).then(() => {
+        this.dialogFormVisible = false
+        this.$notify({
+          title: 'Success',
+          message: 'Created Successfully',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    resetTemp() {
+      this.temp = {
+        key: ''
       }
     }
   }

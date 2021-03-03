@@ -82,7 +82,7 @@
         </el-table-column>-->
         <el-table-column align="center" label="Actions" width="120">
           <template slot-scope="scope">
-            <router-link :to="'/example/edit/'+scope.row.id">
+            <router-link :to="'/market/edit/'+scope.row.id">
               <el-button type="primary" size="small" icon="el-icon-edit">
                 详情
               </el-button>

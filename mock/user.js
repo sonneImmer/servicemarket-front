@@ -3,8 +3,11 @@ const tokens = {
   admin: {
     token: 'admin-token'
   },
-  editor: {
-    token: 'editor-token'
+  consumer: {
+    token: 'consumer-token'
+  },
+  provider: {
+    token: 'provider-token'
   }
 }
 
@@ -15,11 +18,17 @@ const users = {
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
   },
-  'editor-token': {
-    roles: ['editor'],
-    introduction: 'I am an editor',
+  'consumer-token': {
+    roles: ['consumer'],
+    introduction: 'I am an consumer',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
+  },
+  'provider-token': {
+    roles: ['provider'],
+    introduction: 'I am an providr',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal provider'
   }
 }
 
