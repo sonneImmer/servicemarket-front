@@ -60,7 +60,7 @@ import BriefIntroCard from './components/BriefIntroCard'
 import ServiceDetail from '@/views/market/components/ServiceDetail'
 import FeedBackCard from '@/views/market/components/FeedBackCard'
 import { mapGetters } from 'vuex'
-import { purchaseService } from '@/api/service'
+import { purchaseService } from '@/api/service-mock'
 
 export default {
   name: 'Edit',

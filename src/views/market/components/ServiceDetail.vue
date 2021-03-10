@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { feachServiceDetail } from '@/api/service'
+import { feachServiceDetail } from '@/api/service-mock'
 
 export default {
   name: 'ServiceDetail',

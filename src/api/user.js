@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/utils/request-mock'
 
 export function login(data) {
   return request({

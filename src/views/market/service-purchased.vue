@@ -33,16 +33,18 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="220px" align="center" label="服务描述">
+      <el-table-column width="220px" align="center" label="服务网址">
         <template slot-scope="scope">
-          <span>{{ scope.row.service_details }}</span>
+          <a :href=scope.row.instance.service_url style="color: #0a76a4">
+            <span>{{ scope.row.instance.service_url }}</span>
+          </a>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="Status" width="110">
         <template slot-scope="{row}">
-          <el-tag :type="row.service_status | statusFilter">
-            {{ row.service_status }}
+          <el-tag :type="row.instance.service_status | statusFilter">
+            {{ row.instance.service_status }}
           </el-tag>
         </template>
       </el-table-column>
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-import { getPurchasedService } from '@/api/service'
+import { getPurchasedService } from '@/api/service-mock'
 
 export default {
   name: 'ServicePurchased',
@@ -90,7 +92,7 @@ export default {
   data() {
     return {
       list: '',
-      loading: ''
+      listLoading: ''
     }
   },
   mounted() {
@@ -98,10 +100,10 @@ export default {
   },
   methods: {
     getMyPurchasedService() {
-      this.loading = true
+      this.listLoading = true
       getPurchasedService(233).then(response => {
         this.list = response.data
-        this.loading = false
+        this.listLoading = false
         console.log('Baka')
         console.log(this.list)
       })

@@ -41,7 +41,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="120px" align="center" label="上线日期">
+        <el-table-column width="160px" align="center" label="上线日期">
           <template slot-scope="scope">
             <span>{{ scope.row.online_time }}</span>
           </template>
@@ -87,7 +87,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination/index'
-import { feachServiceList } from '@/api/service'
+import { feachServiceList } from '@/api/service-mock'
 
 export default {
   name: 'MyServiceList',

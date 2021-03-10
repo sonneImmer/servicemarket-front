@@ -2,27 +2,27 @@
   <div>
     <div class="filter-container">
       <el-input v-model="listQuery.service_name" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select placeholder="Imp" clearable style="width: 90px" class="filter-item">
+<!--      <el-select placeholder="Imp" clearable style="width: 90px" class="filter-item">
         <el-option />
       </el-select>
       <el-select placeholder="Type" clearable class="filter-item" style="width: 130px">
         <el-option />
-      </el-select>
+      </el-select>-->
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+<!--      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
-      </el-button>
+      </el-button>-->
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
-      <el-checkbox class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
+<!--      <el-checkbox class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
         reviewer
-      </el-checkbox>
+      </el-checkbox>-->
     </div>
 
     <div class="app-container">
@@ -35,51 +35,39 @@
         highlight-current-row
         style="width: 100%;"
       >
-        <el-table-column align="center" label="ID" width="80" prop="ID" sortable>
-          <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
-          </template>
-        </el-table-column>
 
         <el-table-column width="160px" align="center" label="服务名称">
           <template slot-scope="scope">
-            <span>{{ scope.row.service_name }}</span>
+            <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
 
         <el-table-column width="160px" align="center" label="服务提供商">
           <template slot-scope="scope">
-            <span>{{ scope.row.service_company }}</span>
+            <span>{{ scope.row.instance[0].hostName }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="120px" align="center" label="上线日期">
+        <el-table-column width="100px" align="center" label="上线日期">
           <template slot-scope="scope">
-            <span>{{ scope.row.online_time }}</span>
+            <span>{{ scope.row.instance[0].leaseInfo.registrationTimestamp }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="220px" align="center" label="服务描述">
+        <el-table-column width="220px" align="center" label="服务网址">
           <template slot-scope="scope">
-            <span>{{ scope.row.service_details }}</span>
+            <a :href=scope.row.instance[0].homePageUrl style="color: #0a76a4">
+              <span>{{ scope.row.instance[0].homePageUrl }}</span>
+            </a>
           </template>
         </el-table-column>
 
         <el-table-column class-name="status-col" label="Status" width="110">
-          <template slot-scope="{row}">
-            <el-tag :type="row.service_status | statusFilter">
-              {{ row.service_status }}
-            </el-tag>
+          <template slot-scope="scope">
+            {{ scope.row.instance[0].status }}
           </template>
         </el-table-column>
 
-        <!--      <el-table-column min-width="300px" label="Title">
-          <template slot-scope="{row}">
-            <router-link :to="'/example/edit/'+row.id" class="link-type">
-              <span>{{ row.title }}</span>
-            </router-link>
-          </template>
-        </el-table-column>-->
         <el-table-column align="center" label="Actions" width="120">
           <template slot-scope="scope">
             <router-link :to="'/market/edit/'+scope.row.id">
@@ -97,7 +85,8 @@
   </div>
 </template>
 <script>
-import { feachServiceList } from '@/api/service'
+import { feachServiceList } from '@/api/service-mock'
+import { feachServiceList_temp } from '@/api/service'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
@@ -150,7 +139,8 @@ export default {
     }
   },
   created() {
-    this.getServiceList()
+    // this.getServiceList()
+    this.getServiceList_temp()
   },
   methods: {
     getServiceList() {
@@ -169,6 +159,19 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getServiceList()
+    },
+    getServiceList_temp() {
+      this.listLoading = true
+      feachServiceList_temp().then(response => {
+        console.log(response.data)
+        this.list = response.data.applications.application
+        console.log('BAKA1')
+        console.log(response.data.applications.application)
+
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
     }
   }
 }

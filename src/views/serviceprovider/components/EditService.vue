@@ -40,35 +40,28 @@
                     <el-date-picker v-model="postForm.online_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
-
-                <el-col :span="6">
-                  <el-form-item label-width="90px" label="Importance:" class="postInfo-container-item">
-                    <el-rate
-                      :max="3"
-                      :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-                      :low-threshold="1"
-                      :high-threshold="3"
-                      style="display:inline-block"
-                    />
-                  </el-form-item>
-                </el-col>
               </el-row>
             </div>
           </el-col>
         </el-row>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Summary:">
-          <el-input v-model="postForm.content_short" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
+        <el-form-item style="margin-bottom: 40px;" label-width="90px" label="ContentShort:">
+          <el-input v-model="postForm.instance.content_short" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
 
-        <el-form-item prop="service_details" style="margin-bottom: 30px;">
+        <el-form-item style="margin-bottom: 40px;" label-width="90px" label="ServiceURL:">
+          <el-input v-model="postForm.instance.service_url" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the service url" />
+          <span v-show="serviceUrlLength" class="word-counter">{{ serviceUrlLength }}words</span>
+        </el-form-item>
+
+<!--        <el-form-item prop="service_details" style="margin-bottom: 30px;">
           <Tinymce ref="editor" v-model="postForm.service_details" :height="400" />
         </el-form-item>
 
         <el-form-item style="margin-bottom: 30px;">
           <Upload v-model="postForm.image_uri" />
-        </el-form-item>
+        </el-form-item>-->
       </div>
     </el-form>
   </div>
@@ -80,7 +73,7 @@ import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import Upload from '@/components/Upload/SingleImage3'
 import { validURL } from '@/utils/validate'
-import { submitService } from '@/api/service'
+import { submitService } from '@/api/service-mock'
 
 /* const defaultForm = {
   service_status: 'info',
@@ -96,7 +89,7 @@ import { submitService } from '@/api/service'
 
 export default {
   name: 'ServiceDetail',
-  components: { Tinymce, MDinput, Sticky, Upload },
+  components: { MDinput, Sticky },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
@@ -109,7 +102,7 @@ export default {
         callback()
       }
     }
-    const validateSourceUri = (rule, value, callback) => {
+    const validateServiceUri = (rule, value, callback) => {
       if (value) {
         if (validURL(value)) {
           callback()
@@ -126,20 +119,21 @@ export default {
     }
     return {
       postForm: {
-        service_status: 'checking',
+        online_time: '',
         service_name: '',
         service_company: '',
-        service_details: '',
-        content_short: '',
-        source_uri: '',
-        image_uri: '',
-        online_time: ''
+        instance: {
+          service_uri: '',
+          service_details: '',
+          content_short: '',
+          service_status: 'checking'
+        }
       },
       loading: false,
       rules: {
         service_name: [{ validator: validateRequire }],
         service_details: [{ validator: validateRequire }],
-        image_uri: [{ validator: validateRequire }]
+        service_uri: [{ validator: validateServiceUri }]
         // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       },
       companyOptions: ['Dragon', 'Eric']

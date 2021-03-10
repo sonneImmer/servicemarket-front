@@ -18,7 +18,8 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
-import * as filters from './filters' // global filters
+import * as filters from './filters'
+import x2js from 'x2js'
 
 /**
  * If you don't want to use mock-server
@@ -32,6 +33,9 @@ import * as filters from './filters' // global filters
   const { mockXHR } = require('../mock')
   mockXHR()
 }*/
+
+// eslint-disable-next-line new-cap
+Vue.prototype.$x2js = new x2js()// XML to JSON
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

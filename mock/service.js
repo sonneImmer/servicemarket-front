@@ -5,25 +5,26 @@ const count = 100
 let i = 0
 const myPurchasedService = []
 
-const baseContent = '<p>Finally you find me, Baka.</p>'
+// const baseContent = '<p>Finally you find me, Baka.</p>'
 
 for (i = 1; i <= count; i++) {
   List.push(Mock.mock({
     id: i,
-    online_time: +Mock.Random.date('T'),
-    service_name: '@string',
+    online_time: '@datetime',
+    service_name: '@title(1,2)',
     service_company: '@name',
-    service_details: 'This Service id is ' + i,
-    content_short: '',
-    source_uri: '',
-    image_uri: '',
-    'service_status|1': ['online', 'offline', 'checking']
+    instance: {
+      service_url: '@url(http)',
+      service_details: 'This Service id is ' + i,
+      content_short: '',
+      'service_status|1': ['online', 'offline', 'checking']
+    }
   }))
 }
 
 module.exports = [
   {
-    url: '/vue-element-admin/service/list',
+    url: '/eureka-vue/service/list',
     type: 'get',
     response: config => {
       const { service_name, page = 1, limit = 20, sort } = config.query
@@ -49,7 +50,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/service/detail',
+    url: '/eureka-vue/service/detail',
     type: 'get',
     response: config => {
       const { id } = config.query
@@ -64,28 +65,30 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/service/createService',
+    url: '/eureka-vue/service/createService',
     type: 'get',
     response: config => {
-      const { service_status,
+      const {
+        online_time,
         service_name,
         service_company,
+        service_url,
         service_details,
         content_short,
-        source_uri,
-        image_uri,
-        online_time } = config.query
+        service_status,
+      } = config.query
 
       List.push(Mock.mock({
         id: i,
         online_time: online_time,
         service_name: service_name,
         service_company: service_company,
-        service_details: service_details,
-        content_short: content_short,
-        source_uri: source_uri,
-        image_uri: image_uri,
-        service_status: service_status
+        instance: {
+          service_url: service_url,
+          service_details: service_details,
+          content_short: content_short,
+          service_status: service_status
+        }
       }))
       i++
 
@@ -96,7 +99,7 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/service/purchaseService',
+    url: '/eureka-vue/service/purchaseService',
     type: 'get',
     response: config => {
       const { id } = config.query
@@ -108,10 +111,10 @@ module.exports = [
     }
   },
   {
-    url: '/vue-element-admin/service/getPurchasedService',
+    url: '/eureka-vue/service/getPurchasedService',
     type: 'get',
     response: config => {
-      const { uid } = config.query
+      // const { uid } = config.query
       const list = []
       for (const serviceId of myPurchasedService) {
         for (const service of List) {
