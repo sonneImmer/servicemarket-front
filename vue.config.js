@@ -38,7 +38,7 @@ module.exports = {
     }, */
     proxy: {
       '/eureka': {
-        target: 'http://123.56.246.148:8080/eureka-server-1.9.26-SNAPSHOT/v2/',
+        target: 'http://101.200.183.1:8080/eureka-server-1.9.26-SNAPSHOT/v2/',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
