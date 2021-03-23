@@ -107,11 +107,11 @@ export const asyncRoutes = [
         meta: { title: 'Market', icon: 'money', noCache: true }
       },
       {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/market/edit'),
-        name: 'edit',
-        hidden: true,
-        meta: { title: 'ServiceDetail', icon: 'example', noCache: true }
+        path: 'service-show/:name',
+        component: () => import('@/views/market/service-show'),
+        name: 'ServiceShow',
+        hidden: false,
+        meta: { title: 'ServiceShow', icon: 'example', noCache: true }
       },
       {
         path: 'service-purchased',

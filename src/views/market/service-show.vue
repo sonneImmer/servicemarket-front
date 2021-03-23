@@ -63,11 +63,12 @@ import { mapGetters } from 'vuex'
 import { purchaseService } from '@/api/service-mock'
 
 export default {
-  name: 'Edit',
+  name: 'ServiceShow',
   components: { Sticky, BriefIntroCard, FeedBackCard, ServiceDetail },
   data() {
     return {
       user: {},
+      service_name: '',
       activeTab: 'activity',
       temp: {
         key: ''
@@ -90,7 +91,7 @@ export default {
     ])
   },
   created() {
-    this.id = this.$route.params.id
+    this.service_name = this.$route.params.name
     this.getUser()
   },
   methods: {
@@ -107,11 +108,11 @@ export default {
       this.dialogFormVisible = true
     },
     purchase() {
-      purchaseService(this.id).then(() => {
+      purchaseService(this.service_name).then(() => {
         this.dialogFormVisible = false
         this.$notify({
           title: 'Success',
-          message: 'Created Successfully',
+          message: 'Purchased Successfully',
           type: 'success',
           duration: 2000
         })

@@ -70,7 +70,7 @@
 
         <el-table-column align="center" label="Actions" width="120">
           <template slot-scope="scope">
-            <router-link :to="'/market/edit/'+scope.row.id">
+            <router-link :to="'/market/service-show/'+scope.row.name">
               <el-button type="primary" size="small" icon="el-icon-edit">
                 详情
               </el-button>
@@ -85,8 +85,7 @@
   </div>
 </template>
 <script>
-import { feachServiceList } from '@/api/service-mock'
-import { feachServiceList_temp } from '@/api/service'
+import { feachServiceList } from '@/api/service'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
@@ -140,33 +139,17 @@ export default {
   },
   created() {
     // this.getServiceList()
-    this.getServiceList_temp()
+    this.getServiceList()
   },
   methods: {
-    getServiceList() {
-      this.listLoading = true
-      feachServiceList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        console.log('BAKA')
-        console.log(this.total)
-
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
-      })
-    },
     handleFilter() {
       this.listQuery.page = 1
       this.getServiceList()
     },
-    getServiceList_temp() {
+    getServiceList() {
       this.listLoading = true
-      feachServiceList_temp().then(response => {
-        console.log(response.data)
+      feachServiceList().then(response => {
         this.list = response.data.applications.application
-        console.log('BAKA1')
-        console.log(response.data.applications.application)
 
         setTimeout(() => {
           this.listLoading = false

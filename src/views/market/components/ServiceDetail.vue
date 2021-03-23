@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { feachServiceDetail } from '@/api/service-mock'
+import { feachServiceDetail } from '@/api/service'
 
 export default {
   name: 'ServiceDetail',
@@ -18,10 +18,10 @@ export default {
     }
   },
   created() {
-    const id = this.$route.params && this.$route.params.id
-    this.fetchData(id)
+    const name = this.$route.params && this.$route.params.name
+    this.fetchData(name)
     console.log('BAKA')
-    console.log(id)
+    console.log(name)
 
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -37,15 +37,11 @@ export default {
         console.log('Baka')
       })
     },*/
-    fetchData(id) {
-      feachServiceDetail(id).then(response => {
+    fetchData(name) {
+      feachServiceDetail(name).then(response => {
         this.postForm = response.data
 
         console.log(this.postForm)
-
-        // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
 
         // set tagsview title
         this.setTagsViewTitle()
@@ -58,12 +54,12 @@ export default {
     },
     setTagsViewTitle() {
       const title = 'Service Detail'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${name}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Article'
-      document.title = `${title} - ${this.postForm.id}`
+      const title = 'Service Detail'
+      document.title = `${title} - ${name}`
     }
   }
 }
