@@ -110,7 +110,7 @@ export const asyncRoutes = [
         path: 'service-show/:name',
         component: () => import('@/views/market/service-show'),
         name: 'ServiceShow',
-        hidden: false,
+        hidden: true,
         meta: { title: 'ServiceShow', icon: 'example', noCache: true }
       },
       {

@@ -1,7 +1,6 @@
 <template>
   <div>
-    This is ServiceDetail page.
-    {{ this.postForm.service_details }}
+    <div v-for= "(item,index) in this.metaData" :key="(item,index)">{{ item }}:{{ index }}</div>
   </div>
 </template>
 
@@ -14,12 +13,17 @@ export default {
     return {
       loading: false,
       query: '',
-      postForm: ''
+      postForm: '',
+      metaData: '',
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      }
     }
   },
   created() {
     const name = this.$route.params && this.$route.params.name
-    this.fetchData(name)
+    this.getServiceDetail(name)
     console.log('BAKA')
     console.log(name)
 
@@ -27,19 +31,12 @@ export default {
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
     this.tempRoute = Object.assign({}, this.$route)
-
-    /* this.getdetail()*/
   },
   methods: {
-    /* getdetail() {
-      feachServiceDetail().then(response => {
-        this.detail = response.data
-        console.log('Baka')
-      })
-    },*/
-    fetchData(name) {
+    getServiceDetail(name) {
       feachServiceDetail(name).then(response => {
         this.postForm = response.data
+        this.metaData = this.postForm.application.instance[0].metadata
 
         console.log(this.postForm)
 
