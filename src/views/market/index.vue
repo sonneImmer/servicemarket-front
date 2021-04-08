@@ -85,7 +85,7 @@
   </div>
 </template>
 <script>
-import { feachServiceList } from '@/api/service'
+import { feachServiceList } from '@/api/service-eureka'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {

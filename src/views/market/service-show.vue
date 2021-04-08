@@ -35,16 +35,63 @@
       </el-row>
 
       <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-        <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-          <el-form-item label="info">
-            <el-input v-model="temp.key" />
-          </el-form-item>
-        </el-form>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>订票服务</span>
+            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+          </div>
+          <el-form>
+            <el-row>
+              <el-col span="6">
+                <el-form-item label="passengerNum">
+                  <el-input v-model="postTicketService.passengerNum" style="width:100px" />
+                </el-form-item>
+              </el-col>
+              <el-col span="6">
+                <el-form-item label="departureTime">
+                  <el-input v-model="postTicketService.departureTime" style="width:100px" />
+                </el-form-item>
+              </el-col>
+              <el-col span="6">
+                <el-form-item label="departure">
+                  <el-input v-model="postTicketService.departure" style="width:100px" />
+                </el-form-item>
+              </el-col>
+              <el-col span="6">
+                <el-form-item label="destination">
+                  <el-input v-model="postTicketService.destination" style="width:100px" />
+                </el-form-item>
+              </el-col>
+              <el-col span="6">
+                <el-form-item label="name">
+                  <el-input v-model="postTicketService.name" style="width:100px" />
+                </el-form-item>
+              </el-col>
+              <el-col span="6">
+                <el-form-item label="action">
+                  <el-input v-model="postTicketService.action" style="width:100px" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col span="12">
+                <el-form-item>
+                  <el-button type="primary" @click="executeServiceAction">
+                    执行动作
+                  </el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <aside>
+            {{ this.serviceResult }}
+          </aside>
+        </el-card>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
             Cancel
           </el-button>
-          <el-button type="primary" @click="purchase">
+          <el-button type="primary" @click="feachSaveOrder">
             Confirm
           </el-button>
         </div>
@@ -60,7 +107,8 @@ import BriefIntroCard from './components/BriefIntroCard'
 import ServiceDetail from '@/views/market/components/ServiceDetail'
 import FeedBackCard from '@/views/market/components/FeedBackCard'
 import { mapGetters } from 'vuex'
-import { purchaseService } from '@/api/service-mock'
+import { purchaseService, saveOrder } from '@/api/service-mock'
+import { feachExecuteService } from '@/api/service-cloud'
 
 export default {
   name: 'ServiceShow',
@@ -80,7 +128,19 @@ export default {
         create: 'Create'
       },
       dialogPvVisible: false,
-      id: ''
+      id: '',
+
+      postTicketService: {
+        passengerNum: '',
+        departureTime: '',
+        departure: '',
+        destination: '',
+        name: '',
+        action: '',
+        ticketNum: '',
+        order_time: ''
+      },
+      serviceResult: ''
     }
   },
   computed: {
@@ -122,6 +182,34 @@ export default {
       this.temp = {
         key: ''
       }
+    },
+    executeServiceAction() {
+      feachExecuteService(this.postTicketService.action, this.postTicketService).then(response => {
+        this.serviceResult = response.data
+        this.postTicketService.ticketNum = this.serviceResult
+        this.postTicketService.order_time = this.getdate()
+      })
+    },
+    feachSaveOrder() {
+      saveOrder(this.postTicketService).then(response => {
+        console.log(response.data)
+      })
+    },
+    getdate() {
+      var date = new Date()
+      var seperator1 = '-'
+      var year = date.getFullYear()
+      var month = date.getMonth() + 1
+      var strDate = date.getDate()
+
+      if (month >= 1 && month <= 9) {
+        month = '0' + month
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = '0' + strDate
+      }
+      var currentdate = year + ' 年 ' + month + ' 月 ' + strDate + ' 日 '
+      return currentdate
     }
   }
 }

@@ -44,6 +44,22 @@ module.exports = {
         pathRewrite: {
           '^/eureka': ''
         }
+      },
+      '/spring': {
+        target: 'http://localhost:2020',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/spring': ''
+        }
+      },
+      '/service': {
+        target: 'http://localhost:10025/api/v1/ticket',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/service': ''
+        }
       }
     },
     before: require('./mock/mock-server.js')

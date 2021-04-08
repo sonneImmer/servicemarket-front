@@ -9,54 +9,55 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column align="center" label="ID" width="80" prop="ID" sortable>
+<!--      <el-table-column align="center" label="ID" width="80" prop="ID" sortable>
+        <template slot-scope="scope">
+          <span>{{ scope.row.id }}</span>
+        </template>
+      </el-table-column>-->
+
+      <el-table-column width="120px" align="center" label="序号">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="160px" align="center" label="服务名称">
+      <el-table-column width="120px" align="center" label="票据编号">
         <template slot-scope="scope">
-          <span>{{ scope.row.service_name }}</span>
+          <span>{{ scope.row.ticketNum }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="160px" align="center" label="服务提供商">
+      <el-table-column width="120px" align="center" label="动作">
         <template slot-scope="scope">
-          <span>{{ scope.row.service_company }}</span>
+          <span>{{ scope.row.action }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" align="center" label="上线日期">
+      <el-table-column width="120px" align="center" label="出发地">
         <template slot-scope="scope">
-          <span>{{ scope.row.online_time }}</span>
+          <span>{{ scope.row.departure }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="220px" align="center" label="服务网址">
+      <el-table-column width="120px" align="center" label="目的地">
         <template slot-scope="scope">
-          <a :href=scope.row.instance.service_url style="color: #0a76a4">
-            <span>{{ scope.row.instance.service_url }}</span>
-          </a>
+          <span>{{ scope.row.destination }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="Status" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.instance.service_status | statusFilter">
-            {{ row.instance.service_status }}
-          </el-tag>
+      <el-table-column width="120px" align="center" label="订票时间">
+        <template slot-scope="scope">
+          <span>{{ scope.row.order_time }}</span>
         </template>
       </el-table-column>
 
-      <!--      <el-table-column min-width="300px" label="Title">
-        <template slot-scope="{row}">
-          <router-link :to="'/example/edit/'+row.id" class="link-type">
-            <span>{{ row.title }}</span>
-          </router-link>
+      <el-table-column width="120px" align="center" label="departureTime">
+        <template slot-scope="scope">
+          <span>{{ scope.row.departureTime }}</span>
         </template>
-      </el-table-column>-->
-      <el-table-column align="center" label="Actions" width="120">
+      </el-table-column>
+
+<!--      <el-table-column align="center" label="Details" width="120">
         <template slot-scope="scope">
           <router-link :to="'/market/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">
@@ -64,7 +65,7 @@
             </el-button>
           </router-link>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
 
 <!--
@@ -75,7 +76,7 @@
 </template>
 
 <script>
-import { getPurchasedService } from '@/api/service-mock'
+import { getSavedService } from '@/api/service-mock'
 
 export default {
   name: 'ServicePurchased',
@@ -96,12 +97,12 @@ export default {
     }
   },
   mounted() {
-    this.getMyPurchasedService()
+    this.feachSavedService()
   },
   methods: {
-    getMyPurchasedService() {
+    feachSavedService() {
       this.listLoading = true
-      getPurchasedService(233).then(response => {
+      getSavedService().then(response => {
         this.list = response.data
         this.listLoading = false
         console.log('Baka')

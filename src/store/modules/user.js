@@ -41,6 +41,15 @@ const actions = {
       }).catch(error => {
         reject(error)
       })
+      /* const { data } = {
+        code: 20000,
+        token: {
+          admin: {
+            token: 'admin-token'
+          }
+        }
+      }
+      commit */
     })
   },
 

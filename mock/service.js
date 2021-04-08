@@ -4,6 +4,8 @@ const List = []
 const count = 100
 let i = 0
 const myPurchasedService = []
+const mySavedService = []
+let count_ticket = 1
 
 // const baseContent = '<p>Finally you find me, Baka.</p>'
 
@@ -75,7 +77,7 @@ module.exports = [
         service_url,
         service_details,
         content_short,
-        service_status,
+        service_status
       } = config.query
 
       List.push(Mock.mock({
@@ -111,11 +113,35 @@ module.exports = [
     }
   },
   {
-    url: '/eureka-vue/service/getPurchasedService',
+    url: '/eureka-vue/service/saveOrder',
+    type: 'post',
+    response: config => {
+      const { query } = config.body
+      const obj = config.body
+      mySavedService.push(Mock.mock({
+        id: count_ticket,
+        action: obj.action,
+        departureTime: obj.departureTime,
+        departure: obj.departure,
+        destination: obj.destination,
+        name: obj.name,
+        order_time: obj.order_time,
+        passenger_time: obj.passengerNum,
+        ticketNum: obj.ticketNum
+      }))
+      count_ticket++
+      return {
+        code: 20000,
+        data: true
+      }
+    }
+  },
+  {
+    url: '/eureka-vue/service/getSavedService',
     type: 'get',
     response: config => {
       // const { uid } = config.query
-      const list = []
+      /* const list = []
       for (const serviceId of myPurchasedService) {
         for (const service of List) {
           // eslint-disable-next-line eqeqeq
@@ -124,10 +150,10 @@ module.exports = [
             break
           }
         }
-      }
+      }*/
       return {
         code: 20000,
-        data: list
+        data: mySavedService
       }
     }
   }

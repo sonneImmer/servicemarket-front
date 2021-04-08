@@ -1,9 +1,8 @@
-import request from '@/utils/request'
+import request from '@/utils/request_eureka'
 
 export function feachServiceList() {
   return request({
     url: '/apps',
-    // url: 'http://localhost:8080/v2/apps/',
     method: 'get'
   })
 }

@@ -24,18 +24,17 @@ export function submitService(query) {
   })
 }
 
-export function purchaseService(id) {
+export function saveOrder(query) {
   return request({
-    url: '/eureka-vue/service/purchaseService',
-    method: 'get',
-    params: { id }
+    url: '/eureka-vue/service/saveOrder',
+    method: 'post',
+    data: query
   })
 }
 
-export function getPurchasedService(uid) {
+export function getSavedService() {
   return request({
-    url: '/eureka-vue/service/getPurchasedService',
-    method: 'get',
-    params: { uid }
+    url: '/eureka-vue/service/getSavedService',
+    method: 'get'
   })
 }
