@@ -23,7 +23,7 @@
 
       <el-table-column width="120px" align="center" label="票据编号">
         <template slot-scope="scope">
-          <span>{{ scope.row.ticketNum }}</span>
+          <span>{{ scope.row.ticketNumber }}</span>
         </template>
       </el-table-column>
 

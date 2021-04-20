@@ -137,7 +137,8 @@ export default {
         destination: '',
         name: '',
         action: '',
-        ticketNum: '',
+        ticketNumber: '',
+        seatNumber: '',
         order_time: ''
       },
       serviceResult: ''
@@ -186,7 +187,9 @@ export default {
     executeServiceAction() {
       feachExecuteService(this.postTicketService.action, this.postTicketService).then(response => {
         this.serviceResult = response.data
-        this.postTicketService.ticketNum = this.serviceResult
+        this.postTicketService.ticketNumber = this.serviceResult.ticketNumber
+        this.postTicketService.seatNumber = response.data.seatNumber
+
         this.postTicketService.order_time = this.getdate()
       })
     },

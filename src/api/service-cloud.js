@@ -8,10 +8,10 @@ export function feachHello(query) {
   })
 }
 
-export function feachExecuteService(action, json) {
+export function feachExecuteService(action, query) {
   return request({
     url: '/' + action,
     method: 'post',
-    data: json
+    params: query
   })
 }

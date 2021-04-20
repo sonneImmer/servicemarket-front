@@ -127,8 +127,21 @@ module.exports = [
         name: obj.name,
         order_time: obj.order_time,
         passenger_time: obj.passengerNum,
-        ticketNum: obj.ticketNum
+        ticketNumber: obj.ticketNumber,
+        seatNumber: obj.seatNumber
       }))
+      /* mySavedService.push(Mock.mock({
+        id: count_ticket,
+        action: query.action,
+        departureTime: query.departureTime,
+        departure: query.departure,
+        destination: query.destination,
+        name: query.name,
+        order_time: query.order_time,
+        passenger_time: query.passengerNum,
+        ticketNum: query.ticketNum
+      }))*/
+
       count_ticket++
       return {
         code: 20000,
